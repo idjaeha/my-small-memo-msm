@@ -7,39 +7,88 @@ const MEMOS_LS = 'memos';
 
 let memos = [];
 
+function deleteMemo(event) {
+    event.preventDefault();
+    const btn = event.target;
+    const td = btn.parentNode;
+    memoTable.removeChild(td);
+    const cleanMemos = memos.filter(function(memo) {
+        return memo.id !== td.id;
+    });
+    memos = cleanMemos;
+    saveMemos();
+}
+
+function updateMemo(event) {
+    event.preventDefault();
+    const btn = event.target;
+    const currentContent = btn.parentNode.querySelector("textarea").value;
+    const currentTitle = btn.parentNode.querySelector("input").value;
+    const currentDate = btn.parentNode.querySelector("h5");
+    const currentId = btn.parentNode.id;
+    
+
+    const loadedMemos = localStorage.getItem(MEMOS_LS);
+    const parsedMemos = JSON.parse(loadedMemos);
+    const now = new Date();
+    currentDate.innerHTML = getTime(now);
+
+    parsedMemos.forEach(function(memo) {
+        if(memo.id === currentId) {
+            console.log(memo.id, currentId);
+            memo.title = currentTitle;
+            memo.content = currentContent;
+            memo.date = now;
+        }
+    });
+
+    memos = parsedMemos;
+    saveMemos();
+}
+
 function saveMemos() {
     localStorage.setItem(MEMOS_LS, JSON.stringify(memos));
 }
 
-function paintMemo(title, content, date = null) {
-    const newId = date === null ? new Date() : date;
-    const td = getMemoObj(title, content, newId);
+function paintMemo(title, content, date = null, id = null) {
+    const newId = id === null ? new Date() : id;
+    const newDate = date === null ? newId : date;
+    const td = getMemoObj(title, content, newDate, newId);
     memoTable.appendChild(td);
     const memoObj = {
         title : title,
         content : content,
-        date : newId,
+        date : newDate,
         id : newId
     };
     memos.push(memoObj);
 }
 
-function getMemoObj(title, content, date) {
+function getMemoObj(title, content, date, id) {
     _td = document.createElement("td");
-    _title = document.createElement("h4");
+    _title = document.createElement("input");
     _date = document.createElement("h5");
     _content = document.createElement("textarea");
     _br = document.createElement("br");
+    _delBtn = document.createElement("button");
+    _updateBtn = document.createElement("button");
     
-    _title.innerHTML = title;
-    _content.innerHTML = content;
+    _title.value = title;
+    _content.value = content;
     _date.innerHTML = getTime(date);
+    _delBtn.innerHTML = "삭제";
+    _updateBtn.innerHTML = "수정";
+    _delBtn.addEventListener("click", deleteMemo);
+    _updateBtn.addEventListener("click", updateMemo);
+    _td.id = id;
 
     _td.appendChild(_title);
+    _td.appendChild(_updateBtn);
+    _td.appendChild(_delBtn);
     _td.appendChild(_br);
     _td.appendChild(_content);
-    _td.appendChild(_br);
     _td.appendChild(_date);
+    
 
     return _td;
 }
@@ -71,13 +120,12 @@ function handleSubmit(event) {
     memoTextarea.value= "";
     saveMemos();
 }
-
 function loadMemos() {
     const loadedMemos = localStorage.getItem(MEMOS_LS);
     if(loadedMemos !== null) {
         const parsedMemos = JSON.parse(loadedMemos);
         parsedMemos.forEach(function(memo) {
-            paintMemo(memo.title, memo.content, memo.date);
+            paintMemo(memo.title, memo.content, memo.date, memo.id);
         });
     }
 }
