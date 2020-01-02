@@ -35,7 +35,6 @@ function updateMemo(event) {
 
     parsedMemos.forEach(function(memo) {
         if(memo.id === currentId) {
-            console.log(memo.id, currentId);
             memo.title = currentTitle;
             memo.content = currentContent;
             memo.date = now;
@@ -51,15 +50,15 @@ function saveMemos() {
 }
 
 function paintMemo(title, content, date = null, id = null) {
-    const newId = id === null ? new Date() : id;
+    const newId = id === null ? new Date().toJSON() : id; //해당 옵션을 주지 않는 경우 태그와 로컬 스토리지의 값이 다르게 표현된다. toJSON은 문자열로 변경하는 것과 의미가 같다.
     const newDate = date === null ? newId : date;
     const td = getMemoObj(title, content, newDate, newId);
     memoTable.appendChild(td);
     const memoObj = {
+        id : newId,
         title : title,
         content : content,
-        date : newDate,
-        id : newId
+        date : newDate
     };
     memos.push(memoObj);
 }
@@ -89,7 +88,6 @@ function getMemoObj(title, content, date, id) {
     _td.appendChild(_content);
     _td.appendChild(_date);
     
-
     return _td;
 }
 
