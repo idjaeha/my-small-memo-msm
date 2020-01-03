@@ -1,22 +1,77 @@
-.memoListDiv {
-    
+body {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  background-color: rgb(230, 232, 240);
 }
 
 .memoDiv,
 .loginDiv {
-    display: none;
+  display: none;
 }
 
 .showing {
-    display: block;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
 }
 
 .memoObj {
-    background-color: #a7a7a7;
-    display: inline-block;
-    margin: 2px;
+  all: unset;
+  background-color: #a7a7a7;
+  display: inline-block;
+  padding: 3px;
+  margin: 5px;
+  width: 250px;
+  border-width: 1px;
+  border-radius: 10px;
+  box-shadow: 0 2px 3px;
+}
+
+.logout {
+  display: flex;
+  all: unset;
+  background-color: white;
+  box-shadow: 0 2px 3px;
+  border-width: 1px;
+  border-radius: 10px;
+  padding: 3px;
+  margin-left: 10px;
+  cursor: pointer;
+  text-align: center;
+}
+
+.logout:active {
+  transform: scale(0.98);
 }
 
 .memoTitle {
-    display: inline-block;
+  display: flex;
+  font-size: 30px;
+}
+
+.memoListDiv {
+  width: 1080px;
+}
+
+.memoTitleBar {
+  display: flex;
+  flex-direction: row;
+  padding: 10px;
+}
+
+.memoTable {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+.memoObjTitle {
+  all: unset;
+  width: 160px;
+}
+
+.memoObjContent {
+  all: unset;
 }

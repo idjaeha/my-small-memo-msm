@@ -1,44 +1,47 @@
 <!DOCTYPE html>
 <html lang="ko">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <link rel="stylesheet" type="text/css" href="public/css/index.css" />
     <title>My small Memo</title>
-</head>
-<body>
+  </head>
+  <body>
     <h1>나-작-메</h1>
     <div class="js-loginDiv loginDiv showing">
-        <form class="js-loginForm">
-            <input class="js-id" type="text" placeholder="Write Your ID"/> <br />
-            <input class="js-password" type="password" placeholder="Write Your PWD"/> <br />
-            <span class="js-loginMsg"></span>
-        </form>
-    </div>
-    
-    <div class="js-memoDiv memoDiv">
-        <div class="js-memoTitleBar">
-            <h4 class="js-memoTitle memoTitle">Lalala's Small Memo</h4>
-            <button class="js-logoutBtn logout">Logout</button>
-        </div>
-        
-        <form class="js-memoForm">
-            <div>입력</div>
-            <input class="js-memoTitle" type="text" placeholder="Write title" /> <br />
-            <textarea class="js-memo" placeholder="Write your memo!"></textarea> <br />
-            <button class="js-memoSubmit">Enter</button>
-        </form>
+      <form class="js-loginForm">
+        <input class="js-id" type="text" placeholder="Write Your ID" /> <br />
+        <input
+          class="js-password"
+          type="password"
+          placeholder="Write Your PWD"
+        />
         <br />
-        <div class="js-memoListDiv memoListDiv">
-            <div>메모 리스트</div> 
-            <div class="js-memoTable">
+        <span class="js-loginMsg"></span>
+      </form>
+    </div>
 
-            </div>
-        </div>
+    <div class="js-memoDiv memoDiv">
+      <div class="js-memoTitleBar memoTitleBar">
+        <div class="js-memoTitle memoTitle">Lalala's Small Memo</div>
+        <button class="js-logoutBtn logout">Logout</button>
+      </div>
+
+      <form class="js-memoForm">
+        <input class="js-memoTitle" type="text" placeholder="Write title" />
+        <br />
+        <textarea class="js-memo" placeholder="Write your memo!"></textarea>
+        <br />
+        <button class="js-memoSubmit">Enter</button>
+      </form>
+      <br />
+
+      <div class="js-memoListDiv memoListDiv">
+        <div class="js-memoTable memoTable"></div>
+      </div>
     </div>
     <script src="public/javascript/login.js"></script>
     <script src="public/javascript/memo.js"></script>
-
-</body>
+  </body>
 </html>
