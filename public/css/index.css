@@ -1,15 +1,22 @@
 .memoListDiv {
-    overflow: scroll;
+    
 }
 
-.memoDiv {
-    display: none;
-}
-
+.memoDiv,
 .loginDiv {
     display: none;
 }
 
 .showing {
     display: block;
+}
+
+.memoObj {
+    background-color: #a7a7a7;
+    display: inline-block;
+    margin: 2px;
+}
+
+.memoTitle {
+    display: inline-block;
 }

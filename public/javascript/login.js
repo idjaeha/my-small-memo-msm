@@ -4,10 +4,15 @@ const passwordInput = loginForm.querySelector(".js-password");
 const msg = loginForm.querySelector(".js-loginMsg");
 const memoDiv = document.querySelector(".js-memoDiv");
 const loginDiv = document.querySelector(".js-loginDiv");
+const logoutBtn = document.querySelector(".js-logoutBtn");
 const memoTitle = memoDiv.querySelector(".js-memoTitle");
 
 const ACCOUNTS_LS = "accounts";
+const AUTOLOGIN_LS = "autoLogin";
 let accounts = [];
+let currentAccountObj = {
+
+};
 
 function createAccount(id, pwd) {
     // 새로운 계정을 생성하는 함수
@@ -27,9 +32,19 @@ function loginAccount(id, pwd) {
     // 로그인 하는 함수
     // arg 1 : id ( 사용할 아이디 )
     // arg 2 : pwd ( 사용할 비밀번호 )
+    idInput.value = ""
+    passwordInput.value = ""
+
     loginDiv.classList.remove("showing");
     memoDiv.classList.add("showing");
-    memoTitle.innerHTML = `${id}'s Small Memo`;
+    memoTitle.innerText = `${id}'s Small Memo`;
+    const loginObj = {
+        id,
+        password: pwd
+    }
+
+    currentAccountObj = loginObj;
+    localStorage.setItem(AUTOLOGIN_LS, JSON.stringify(loginObj));
 }
 
 function checkAccount(id, pwd) {
@@ -78,19 +93,18 @@ function handleLogin(event) {
     event.preventDefault();
     if (event.keyCode === 13) {
         // loginForm 에서 submit 이 발생했을 때 사용되는 핸들
-        const currentId = idInput.value.trim();
-        const currentPwd = passwordInput.value.trim();
+        const enteredId = idInput.value.trim();
+        const enteredPwd = passwordInput.value.trim();
         loadAccounts();
-        const check = checkAccount(currentId, currentPwd);
-        console.log(check);
+        const check = checkAccount(enteredId, enteredPwd);
         if (check === 0) {
             // 성공, 존재하는 계정
-            loginAccount(currentId, currentPwd);
+            loginAccount(enteredId, enteredPwd);
             msg.innerText = "";
         } else if(check === 1) {
             // 성공, 존재하지 않는 계정
-            createAccount(currentId, currentPwd);
-            loginAccount(currentId, currentPwd);
+            createAccount(enteredId, enteredPwd);
+            loginAccount(enteredId, enteredPwd);
             msg.innerText = "";
         } else if(check === 2) {
             // 실패, id와 pwd 불일치
@@ -102,10 +116,33 @@ function handleLogin(event) {
     }
 }
 
+function autoLogin() {
+    // 자동 로그인 여부에 대해 판단하는 함수
+    const loadedAutoLogin = localStorage.getItem(AUTOLOGIN_LS);
+    loadAccounts();
+    if (loadedAutoLogin !== null) {
+        const parsedAccount = JSON.parse(loadedAutoLogin)
+        if (checkAccount(parsedAccount.id, parsedAccount.password) === 0) {
+            loginAccount(parsedAccount.id, parsedAccount.password);
+        }
+    }
+}
+
+function handleLogout(event) {
+    // 로그아웃 버튼을 누르게 되면 발생하는 이벤트를 관리하는 핸들
+    event.preventDefault();
+    currentAccountObj = {};
+    localStorage.removeItem(AUTOLOGIN_LS);
+
+    loginDiv.classList.add("showing");
+    memoDiv.classList.remove("showing");
+}
 
 function init() {
+    autoLogin();
     idInput.addEventListener("keyup", handleLogin);
     passwordInput.addEventListener("keyup", handleLogin);
+    logoutBtn.addEventListener("click", handleLogout);
 }
 
 init();

@@ -64,7 +64,7 @@ function paintMemo(title, content, date = null, id = null) {
 }
 
 function getMemoObj(title, content, date, id) {
-    _td = document.createElement("td");
+    _div = document.createElement("div");
     _title = document.createElement("input");
     _date = document.createElement("h5");
     _content = document.createElement("textarea");
@@ -79,16 +79,17 @@ function getMemoObj(title, content, date, id) {
     _updateBtn.innerHTML = "수정";
     _delBtn.addEventListener("click", deleteMemo);
     _updateBtn.addEventListener("click", updateMemo);
-    _td.id = id;
+    _div.id = id;
+    _div.classList.add("memoObj");
 
-    _td.appendChild(_title);
-    _td.appendChild(_updateBtn);
-    _td.appendChild(_delBtn);
-    _td.appendChild(_br);
-    _td.appendChild(_content);
-    _td.appendChild(_date);
+    _div.appendChild(_title);
+    _div.appendChild(_updateBtn);
+    _div.appendChild(_delBtn);
+    _div.appendChild(_br);
+    _div.appendChild(_content);
+    _div.appendChild(_date);
     
-    return _td;
+    return _div;
 }
 
 function getTime(date = null) {
