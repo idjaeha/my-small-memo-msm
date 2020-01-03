@@ -1,3 +1,15 @@
 .memoListDiv {
     overflow: scroll;
 }
+
+.memoDiv {
+    display: none;
+}
+
+.loginDiv {
+    display: none;
+}
+
+.showing {
+    display: block;
+}
