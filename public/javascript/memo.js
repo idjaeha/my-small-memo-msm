@@ -4,6 +4,8 @@ const memoInput = memoForm.querySelector("input");
 const memoTable = document.querySelector(".js-memoTable");
 
 const MEMOS_LS = "memos";
+const COLORS = ["red", "blue", "yellow", "green", "orange"];
+const COLORS_NUM = COLORS.length;
 
 let memos = [];
 
@@ -62,6 +64,14 @@ function paintMemo(title, content, date = null, id = null) {
   memos.push(memoObj);
 }
 
+function focusTextAreaHandle(event) {
+  event.target.style.height = "0px";
+  event.target.style.height = 11 + event.target.scrollHeight + "px";
+}
+function blurTextAreaHandle(event) {
+  event.target.style.height = "30px";
+}
+
 function getMemoObj(title, content, date, id) {
   _div = document.createElement("div");
   _title = document.createElement("input");
@@ -82,6 +92,11 @@ function getMemoObj(title, content, date, id) {
   _div.classList.add("memoObj");
   _title.classList.add("memoObjTitle");
   _content.classList.add("memoObjContent");
+  _div.classList.add(COLORS[Math.floor(Math.random(COLORS_NUM) * 5)]);
+  _content.addEventListener("keyup", focusTextAreaHandle);
+  _content.addEventListener("keydown", focusTextAreaHandle);
+  _content.addEventListener("focus", focusTextAreaHandle);
+  _content.addEventListener("blur", blurTextAreaHandle);
 
   _div.appendChild(_title);
   _div.appendChild(_updateBtn);
@@ -129,9 +144,16 @@ function loadMemos() {
   }
 }
 
+function addEventHandles() {
+  memoForm.addEventListener("submit", handleSubmit);
+  memoTextarea.addEventListener("focus", focusTextAreaHandle);
+  memoTextarea.addEventListener("keydown", focusTextAreaHandle);
+  memoTextarea.addEventListener("keyup", focusTextAreaHandle);
+}
+
 function init() {
   loadMemos();
-  memoForm.addEventListener("submit", handleSubmit);
+  addEventHandles();
 }
 
 init();

@@ -3,7 +3,16 @@ body {
   align-items: center;
   flex-direction: column;
   font-family: Verdana, Geneva, Tahoma, sans-serif;
-  background-color: rgb(230, 232, 240);
+  background-color: rgb(249, 253, 255);
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 
 .memoDiv,
@@ -17,16 +26,32 @@ body {
   flex-direction: column;
 }
 
+.memoForm,
 .memoObj {
   all: unset;
-  background-color: #a7a7a7;
+  background-color: rgba(221, 221, 221, 0.8);
   display: inline-block;
   padding: 3px;
   margin: 5px;
   width: 250px;
+  border-style: solid;
   border-width: 1px;
   border-radius: 10px;
   box-shadow: 0 2px 3px;
+  animation: fadeIn 0.3s linear;
+}
+
+button {
+  all: unset;
+  background-color: white;
+  cursor: pointer;
+  padding: 3px;
+  text-align: center;
+  border-color: black;
+  border-style: solid;
+  border-width: 1px;
+  border-radius: 3px;
+  margin: 2px;
 }
 
 .logout {
@@ -42,17 +67,18 @@ body {
   text-align: center;
 }
 
+button:active,
 .logout:active {
-  transform: scale(0.98);
+  transform: scale(0.95);
+}
+
+button:hover {
+  box-shadow: 0px 0px 3px 2px rgba(108, 159, 255, 0.4);
 }
 
 .memoTitle {
   display: flex;
   font-size: 30px;
-}
-
-.memoListDiv {
-  width: 1080px;
 }
 
 .memoTitleBar {
@@ -61,17 +87,69 @@ body {
   padding: 10px;
 }
 
+.memoListDiv {
+  width: 1080px;
+}
+
 .memoTable {
   display: flex;
+  align-items: flex-start;
   flex-direction: row;
   flex-wrap: wrap;
 }
 
+.memoForm > input,
 .memoObjTitle {
   all: unset;
   width: 160px;
+  font-weight: bold;
 }
 
+.memoForm > textarea,
 .memoObjContent {
   all: unset;
+  width: 300px;
+  height: 30px;
+  overflow-x: hidden;
+  overflow-y: hidden;
+  overflow-wrap: break-word;
+  width: 200px;
+}
+
+.loginForm > input {
+  all: unset;
+  width: 200px;
+  height: 30px;
+  background-color: white;
+  margin: 10px;
+  border-style: solid;
+  border-width: 1px;
+  border-color: black;
+  border-radius: 5px;
+}
+
+textarea:hover,
+input:hover {
+  box-shadow: 0px 0px 3px 2px rgba(108, 159, 255, 0.4);
+}
+
+.red {
+  background-color: rgb(255, 101, 101);
+}
+.blue {
+  background-color: rgb(112, 112, 255);
+}
+.yellow {
+  background-color: rgb(255, 255, 117);
+}
+.green {
+  background-color: rgb(132, 255, 132);
+}
+.orange {
+  background-color: rgb(253, 205, 116);
+}
+
+.loginMsg {
+  font-weight: bold;
+  color: red;
 }

@@ -10,7 +10,7 @@
   <body>
     <h1>나-작-메</h1>
     <div class="js-loginDiv loginDiv showing">
-      <form class="js-loginForm">
+      <form class="js-loginForm loginForm">
         <input class="js-id" type="text" placeholder="Write Your ID" /> <br />
         <input
           class="js-password"
@@ -18,7 +18,7 @@
           placeholder="Write Your PWD"
         />
         <br />
-        <span class="js-loginMsg"></span>
+        <span class="js-loginMsg loginMsg"></span>
       </form>
     </div>
 
@@ -28,10 +28,13 @@
         <button class="js-logoutBtn logout">Logout</button>
       </div>
 
-      <form class="js-memoForm">
+      <form class="js-memoForm memoForm">
         <input class="js-memoTitle" type="text" placeholder="Write title" />
         <br />
-        <textarea class="js-memo" placeholder="Write your memo!"></textarea>
+        <textarea
+          class="js-memoContent"
+          placeholder="Write your memo"
+        ></textarea>
         <br />
         <button class="js-memoSubmit">Enter</button>
       </form>
