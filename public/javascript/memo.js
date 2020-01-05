@@ -2,6 +2,7 @@ const memoForm = document.querySelector(".js-memoForm");
 const memoTextarea = memoForm.querySelector("textarea");
 const memoInput = memoForm.querySelector("input");
 const memoTable = document.querySelector(".js-memoTable");
+const memoSort = document.getElementById("js-sort");
 
 const MEMOS_LS = "memos";
 const COLORS = ["red", "blue", "yellow", "green", "orange"];
@@ -42,8 +43,20 @@ function updateMemo(event) {
     }
   });
 
+  
   memos = parsedMemos;
+  sortMemos(currentId);
+  location.reload(true); //페이지 새로고침
   saveMemos();
+}
+
+function sortMemos(id) { //수정 후 바뀐 결과대로 정렬 (작성순)
+  const index = memos.findIndex(i => i.id == id);
+  const temp = memos[index];
+  for(var i=0; i <memos.length-index-1; i++) {
+      memos[index+i] = memos[index+i+1]; 
+  }
+  memos[memos.length-1] = temp;
 }
 
 function saveMemos() {
@@ -138,6 +151,8 @@ function loadMemos() {
   const loadedMemos = localStorage.getItem(MEMOS_LS);
   if (loadedMemos !== null) {
     const parsedMemos = JSON.parse(loadedMemos);
+    // sort === 1 ? parsedMemos.reverse() : console.log("11");
+    parsedMemos.reverse();
     parsedMemos.forEach(function(memo) {
       paintMemo(memo.title, memo.content, memo.date, memo.id);
     });
@@ -149,6 +164,13 @@ function addEventHandles() {
   memoTextarea.addEventListener("focus", focusTextAreaHandle);
   memoTextarea.addEventListener("keydown", focusTextAreaHandle);
   memoTextarea.addEventListener("keyup", focusTextAreaHandle);
+  memoSort.addEventListener("click", handleSort);
+}
+
+function handleSort(event) { 
+  // memos.reverse();
+  // saveMemos();
+  // location.reload(true);
 }
 
 function init() {
