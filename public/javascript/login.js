@@ -36,6 +36,7 @@ function loginAccount(id, pwd) {
   loginDiv.classList.remove("showing");
   memoDiv.classList.add("showing");
   memoTitle.innerText = `${id}'s Small Memo`;
+  memoTitle.id = id;
   const loginObj = {
     id,
     password: pwd

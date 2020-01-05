@@ -4,9 +4,9 @@ const memoInput = memoForm.querySelector("input");
 const memoTable = document.querySelector(".js-memoTable");
 const memoSort = document.getElementById("js-sort");
 const fax = document.querySelector("iframe");
-const DB_URL = "http://id001.iptime.org:23000/api/";
-// const DB_URL = "http://localhost:13000/api/";
 
+// const DB_URL = "http://id001.iptime.org:23000/api/";
+const DB_URL = "http://localhost:13000/api/";
 const MEMOS_LS = "memos";
 const COLORS = ["red", "blue", "yellow", "green", "orange"];
 const COLORS_NUM = COLORS.length;
@@ -20,10 +20,10 @@ function deleteMemo(event) {
   const td = btn.parentNode;
   memoTable.removeChild(td);
   const cleanMemos = memos.filter(function(memo) {
-    return memo.id !== td.id;
+    return memo.key !== td.id;
   });
   memos = cleanMemos;
-  saveMemos();
+  deleteMemoToDB(td.id);
 }
 
 function updateMemo(event) {
@@ -33,27 +33,27 @@ function updateMemo(event) {
   const currentTitle = btn.parentNode.querySelector("input").value;
   const currentDate = btn.parentNode.querySelector("h5");
   const currentId = btn.parentNode.id;
+  let updatedMemo = null;
 
-  const loadedMemos = localStorage.getItem(MEMOS_LS);
-  const parsedMemos = JSON.parse(loadedMemos);
-  const now = new Date();
+  const now = new Date().toJSON();
   currentDate.innerHTML = getTime(now);
 
-  parsedMemos.forEach(function(memo) {
-    if (memo.id === currentId) {
+  memos.forEach(function(memo) {
+    if (memo.key === currentId) {
       memo.title = currentTitle;
       memo.content = currentContent;
       memo.date = now;
+      updatedMemo = memo;
     }
   });
 
-  memos = parsedMemos;
-  sortMemos(currentId);
-  saveMemos();
+  //sortMemos(currentId);
+  updateMemoToDB(updatedMemo);
   refreshMemos();
 }
 
-function removeAllMemos() {
+function removeAllMemoDivs() {
+  // 화면에 존재하는 모든 메모 div를 삭제한다.
   while (memoTable.hasChildNodes()) {
     memoTable.removeChild(memoTable.firstChild);
   }
@@ -69,9 +69,8 @@ function sortMemos(id) {
   memos[memos.length - 1] = temp;
 }
 
-function saveMemos() {
-  // memos에 저장된 메모를 모두 저장한다.
-  localStorage.setItem(MEMOS_LS, JSON.stringify(memos));
+function saveMemosToDB() {
+  // memos에 저장된 메모를 DB에 저장한다.
 }
 
 function paintMemo(memoObj) {
@@ -82,7 +81,7 @@ function paintMemo(memoObj) {
 
 function refreshMemos() {
   // memos에 존재하는 모든 메모를 다시 그린다.
-  removeAllMemos();
+  removeAllMemoDivs();
 
   memos.forEach(function(memoObj) {
     const td = getMemoDivObj(memoObj);
@@ -104,6 +103,7 @@ function blurTextAreaHandle(event) {
 }
 
 function getMemoDivObj(memoObj) {
+  // 받은 객체를 토대로 div DOM 객체를 만들어 반환한다.
   div = document.createElement("div");
   title = document.createElement("input");
   date = document.createElement("h5");
@@ -119,11 +119,11 @@ function getMemoDivObj(memoObj) {
   updateBtn.innerHTML = "수정";
   delBtn.addEventListener("click", deleteMemo);
   updateBtn.addEventListener("click", updateMemo);
-  div.id = memoObj.id;
+  div.id = memoObj.key;
   div.classList.add("memoObj");
   title.classList.add("memoObjTitle");
   content.classList.add("memoObjContent");
-  div.classList.add(COLORS[Math.floor(Math.random(COLORS_NUM) * 5)]);
+  div.classList.add(memoObj.color);
   content.addEventListener("keyup", focusTextAreaHandle);
   content.addEventListener("keydown", focusTextAreaHandle);
   content.addEventListener("focus", focusTextAreaHandle);
@@ -158,19 +158,22 @@ function getTime(date = null) {
 
 function handleSubmit(event) {
   event.preventDefault();
+  const key = new Date().toJSON();
   const memoObj = {
+    key,
     writer: "jaeha",
     title: memoInput.value,
     content: memoTextarea.value,
-    color: Math.floor(Math.random() * 5),
-    date: new Date().toJSON()
+    color: COLORS[Math.floor(Math.random(COLORS_NUM) * 5)],
+    date: key
   };
   pushMemo(memoObj);
   paintMemo(memoObj);
   memoInput.value = "";
   memoTextarea.value = "";
+  addMemoToDB(memoObj);
 }
-function loadMemos() {
+function loadMemosFromDB() {
   // DB에서 메모들을 가져와 memos에 저장한다.
   fetch(`${DB_URL}memos`, { method: "GET" })
     .then(function(response) {
@@ -192,7 +195,7 @@ function addEventHandles() {
   memoTextarea.addEventListener("keydown", focusTextAreaHandle);
   memoTextarea.addEventListener("keyup", focusTextAreaHandle);
   memoSort.addEventListener("click", handleSort);
-  document.onload = loadMemos();
+  document.onload = loadMemosFromDB();
 }
 
 function handleSort(event) {
@@ -200,13 +203,13 @@ function handleSort(event) {
 }
 
 function init() {
-  //loadMemos();
   addEventHandles();
 }
 
-function postMemo(memoObj) {
+function addMemoToDB(memoObj) {
   const form = document.createElement("form");
   const title = document.createElement("input");
+  const key = document.createElement("input");
   const content = document.createElement("input");
   const color = document.createElement("input");
   const writer = document.createElement("input");
@@ -214,25 +217,29 @@ function postMemo(memoObj) {
   const fax = document.querySelector("iframe");
 
   title.type = "hidden";
+  key.type = "hidden";
   content.type = "hidden";
   color.type = "hidden";
   writer.type = "hidden";
   date.type = "hidden";
 
   title.name = "title";
+  key.name = "key";
   content.name = "content";
   color.name = "color";
   writer.name = "writer";
   date.name = "date";
 
   title.value = memoObj.title;
+  key.value = memoObj.key;
   content.value = memoObj.content;
   color.value = memoObj.color;
-  writer.value = memoObj.writer;
+  writer.value = memoTitle.id;
   date.value = memoObj.date;
 
   fax.appendChild(form);
   form.appendChild(title);
+  form.appendChild(key);
   form.appendChild(content);
   form.appendChild(color);
   form.appendChild(writer);
@@ -240,6 +247,60 @@ function postMemo(memoObj) {
 
   form.setAttribute("charset", "UTF-8");
   form.action = DB_URL + "memos";
+  form.method = "POST";
+  form.target = "fax";
+  form.submit();
+  form.remove();
+}
+
+function deleteMemoToDB(currentKey) {
+  const form = document.createElement("form");
+  const key = document.createElement("input");
+
+  key.type = "hidden";
+  key.name = "key";
+  key.value = currentKey;
+
+  fax.appendChild(form);
+  form.appendChild(key);
+
+  form.setAttribute("charset", "UTF-8");
+  form.action = DB_URL + "memos/delete";
+  form.method = "POST";
+  form.target = "fax";
+  form.submit();
+  form.remove();
+}
+
+function updateMemoToDB(memoObj) {
+  const form = document.createElement("form");
+  const key = document.createElement("input");
+  const title = document.createElement("input");
+  const content = document.createElement("input");
+  const date = document.createElement("input");
+
+  key.type = "hidden";
+  key.name = "key";
+  key.value = memoObj.key;
+  title.type = "hidden";
+  title.name = "title";
+  title.value = memoObj.title;
+  content.type = "hidden";
+  content.name = "content";
+  content.value = memoObj.content;
+  date.type = "hidden";
+  date.name = "date";
+  date.value = memoObj.date;
+  console.log(memoObj);
+
+  fax.appendChild(form);
+  form.appendChild(key);
+  form.appendChild(title);
+  form.appendChild(content);
+  form.appendChild(date);
+
+  form.setAttribute("charset", "UTF-8");
+  form.action = DB_URL + "memos/update";
   form.method = "POST";
   form.target = "fax";
   form.submit();

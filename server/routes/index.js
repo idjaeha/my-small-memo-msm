@@ -10,24 +10,10 @@ module.exports = function(app, Memo, Account) {
     });
   });
 
-  // GET SINGLE MEMO
-  app.get("/", function(req, res) {
-    res.send("hello");
-  });
-
-  // GET SINGLE MEMO
-  app.get("/api/memos/:memo_id", function(req, res) {
-    res.end();
-  });
-
-  // GET MEMO BY account_id
-  app.get("/api/memos/:account_id", function(req, res) {
-    res.end();
-  });
-
   // CREATE MEMO
   app.post("/api/memos", function(req, res) {
     var memo = new Memo();
+    memo.key = req.body.key;
     memo.title = req.body.title;
     memo.content = req.body.content;
     memo.writer = req.body.writer;
@@ -45,28 +31,29 @@ module.exports = function(app, Memo, Account) {
     });
   });
 
-  // UPDATE THE MEMO
-  app.put("/api/memos/:memo_id", function(req, res) {
-    res.end();
+  app.post("/api/memos/delete", function(req, res) {
+    Memo.remove({ key: req.body.key }, function(err, output) {
+      if (err) return res.status(500).json({ error: "database failure" });
+
+      res.status(204).end();
+    });
   });
 
-  // DELETE MEMO
-  app.delete("/api/memos/:memo_id", function(req, res) {
-    res.end();
-  });
-
-  // GET ALL ACCOUNTS
-  app.get("/api/accounts", function(req, res) {
-    res.end();
-  });
-
-  // GET ACCOUNT BY ID
-  app.get("/api/accounts/:account_id", function(req, res) {
-    res.end();
-  });
-
-  // CREATE ACCOUNT
-  app.post("/api/accounts/:account_id", function(req, res) {
-    res.end();
+  app.post("/api/memos/update", function(req, res) {
+    Memo.updateOne(
+      { key: req.body.key },
+      {
+        $set: {
+          title: req.body.title,
+          date: req.body.date,
+          content: req.body.content
+        }
+      },
+      function(err, output) {
+        if (err) res.status(500).json({ error: "database failure" });
+        if (!output.n) return res.status(404).json({ error: "memo not found" });
+        res.json({ message: "memo updated" });
+      }
+    );
   });
 };
