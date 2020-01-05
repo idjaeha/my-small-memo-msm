@@ -15,6 +15,7 @@ body {
   }
 }
 
+iframe,
 .memoDiv,
 .loginDiv {
   display: none;
