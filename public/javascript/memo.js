@@ -44,41 +44,54 @@ function updateMemo(event) {
     }
   });
 
-  
   memos = parsedMemos;
   sortMemos(currentId);
   saveMemos();
-  paintMemo();
+  refreshMemos();
 }
 
-function Reload() {
+function removeAllMemos() {
   while (memoTable.hasChildNodes()) {
     memoTable.removeChild(memoTable.firstChild);
   }
 }
 
-function sortMemos(id) { //수정 후 바뀐 결과대로 정렬 (작성순)
+function sortMemos(id) {
+  //수정 후 바뀐 결과대로 정렬 (작성순)
   const index = memos.findIndex(i => i.id == id);
   const temp = memos[index];
-  for(var i=0; i <memos.length-index-1; i++) {
-      memos[index+i] = memos[index+i+1]; 
+  for (var i = 0; i < memos.length - index - 1; i++) {
+    memos[index + i] = memos[index + i + 1];
   }
-  memos[memos.length-1] = temp;
+  memos[memos.length - 1] = temp;
 }
 
 function saveMemos() {
   localStorage.setItem(MEMOS_LS, JSON.stringify(memos));
 }
 
-function paintMemo() { //memos에 담겨있는 값을 매번 보여준다
-  Reload(); //기존 memoTable 삭제
+function paintMemo(memoObj) {
+  // 받은 인자를 토대로 메모를 그린다.
+  const td = getMemoObj(
+    memoObj.title,
+    memoObj.content,
+    memoObj.date,
+    memoObj.id
+  );
+  memoTable.appendChild(td);
+}
+
+function refreshMemos() {
+  // memos에 존재하는 모든 메모를 다시 그린다.
+  removeAllMemos();
   memos.forEach(function(memo) {
     const td = getMemoObj(memo.title, memo.content, memo.date, memo.id);
     memoTable.appendChild(td);
   });
 }
 
-function pushMemo(title, content, date = null, id = null) { //memos값 저장
+function pushMemo(title, content, date = null, id = null) {
+  //memos값 저장하고 memoObj를 반환한다.
   const newId = id === null ? new Date().toJSON() : id; //해당 옵션을 주지 않는 경우 태그와 로컬 스토리지의 값이 다르게 표현된다. toJSON은 문자열로 변경하는 것과 의미가 같다.
   const newDate = date === null ? newId : date;
   const memoObj = {
@@ -87,7 +100,9 @@ function pushMemo(title, content, date = null, id = null) { //memos값 저장
     content: content,
     date: newDate
   };
-  memos.push(memoObj);  
+  memos.push(memoObj);
+  saveMemos();
+  return memoObj;
 }
 
 function focusTextAreaHandle(event) {
@@ -155,20 +170,18 @@ function handleSubmit(event) {
   event.preventDefault();
   const currentTitle = memoInput.value;
   const currentContent = memoTextarea.value;
-  pushMemo(currentTitle, currentContent);
+  const memoObj = pushMemo(currentTitle, currentContent);
+  paintMemo(memoObj);
   memoInput.value = "";
   memoTextarea.value = "";
-  saveMemos();
-  paintMemo();
 }
 function loadMemos() {
   const loadedMemos = localStorage.getItem(MEMOS_LS);
   if (loadedMemos !== null) {
     const parsedMemos = JSON.parse(loadedMemos);
     parsedMemos.forEach(function(memo) {
-      pushMemo(memo.title, memo.content, memo.date, memo.id);
+      const memoObj = pushMemo(memo.title, memo.content, memo.date, memo.id);
     });
-    
   }
 }
 
@@ -180,13 +193,13 @@ function addEventHandles() {
   memoSort.addEventListener("click", handleSort);
 }
 
-function handleSort(event) { 
+function handleSort(event) {
   //정렬버튼 클릭시
 }
 
 function init() {
   loadMemos();
-  paintMemo();
+  refreshMemos();
   addEventHandles();
 }
 
