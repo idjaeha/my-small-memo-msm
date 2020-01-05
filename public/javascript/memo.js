@@ -5,8 +5,8 @@ const memoTable = document.querySelector(".js-memoTable");
 const memoSort = document.getElementById("js-sort");
 const fax = document.querySelector("iframe");
 
-// const DB_URL = "http://id001.iptime.org:23000/api/";
-const DB_URL = "http://localhost:13000/api/";
+const DB_URL = "http://id001.iptime.org:13000/api/";
+// const DB_URL = "http://localhost:13000/api/";
 const MEMOS_LS = "memos";
 const COLORS = ["red", "blue", "yellow", "green", "orange"];
 const COLORS_NUM = COLORS.length;
@@ -291,7 +291,6 @@ function updateMemoToDB(memoObj) {
   date.type = "hidden";
   date.name = "date";
   date.value = memoObj.date;
-  console.log(memoObj);
 
   fax.appendChild(form);
   form.appendChild(key);
