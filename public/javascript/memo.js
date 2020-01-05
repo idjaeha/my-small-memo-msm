@@ -9,6 +9,7 @@ const COLORS = ["red", "blue", "yellow", "green", "orange"];
 const COLORS_NUM = COLORS.length;
 
 let memos = [];
+let sort;
 
 function deleteMemo(event) {
   event.preventDefault();
@@ -46,8 +47,14 @@ function updateMemo(event) {
   
   memos = parsedMemos;
   sortMemos(currentId);
-  location.reload(true); //페이지 새로고침
   saveMemos();
+  paintMemo();
+}
+
+function Reload() {
+  while (memoTable.hasChildNodes()) {
+    memoTable.removeChild(memoTable.firstChild);
+  }
 }
 
 function sortMemos(id) { //수정 후 바뀐 결과대로 정렬 (작성순)
@@ -63,18 +70,24 @@ function saveMemos() {
   localStorage.setItem(MEMOS_LS, JSON.stringify(memos));
 }
 
-function paintMemo(title, content, date = null, id = null) {
+function paintMemo() { //memos에 담겨있는 값을 매번 보여준다
+  Reload(); //기존 memoTable 삭제
+  memos.forEach(function(memo) {
+    const td = getMemoObj(memo.title, memo.content, memo.date, memo.id);
+    memoTable.appendChild(td);
+  });
+}
+
+function pushMemo(title, content, date = null, id = null) { //memos값 저장
   const newId = id === null ? new Date().toJSON() : id; //해당 옵션을 주지 않는 경우 태그와 로컬 스토리지의 값이 다르게 표현된다. toJSON은 문자열로 변경하는 것과 의미가 같다.
   const newDate = date === null ? newId : date;
-  const td = getMemoObj(title, content, newDate, newId);
-  memoTable.appendChild(td);
   const memoObj = {
     id: newId,
     title: title,
     content: content,
     date: newDate
   };
-  memos.push(memoObj);
+  memos.push(memoObj);  
 }
 
 function focusTextAreaHandle(event) {
@@ -142,20 +155,20 @@ function handleSubmit(event) {
   event.preventDefault();
   const currentTitle = memoInput.value;
   const currentContent = memoTextarea.value;
-  paintMemo(currentTitle, currentContent);
+  pushMemo(currentTitle, currentContent);
   memoInput.value = "";
   memoTextarea.value = "";
   saveMemos();
+  paintMemo();
 }
 function loadMemos() {
   const loadedMemos = localStorage.getItem(MEMOS_LS);
   if (loadedMemos !== null) {
     const parsedMemos = JSON.parse(loadedMemos);
-    // sort === 1 ? parsedMemos.reverse() : console.log("11");
-    parsedMemos.reverse();
     parsedMemos.forEach(function(memo) {
-      paintMemo(memo.title, memo.content, memo.date, memo.id);
+      pushMemo(memo.title, memo.content, memo.date, memo.id);
     });
+    
   }
 }
 
@@ -168,13 +181,12 @@ function addEventHandles() {
 }
 
 function handleSort(event) { 
-  // memos.reverse();
-  // saveMemos();
-  // location.reload(true);
+  //정렬버튼 클릭시
 }
 
 function init() {
   loadMemos();
+  paintMemo();
   addEventHandles();
 }
 
