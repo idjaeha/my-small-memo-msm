@@ -4,6 +4,8 @@ const memoInput = memoForm.querySelector("input");
 const memoTable = document.querySelector(".js-memoTable");
 const memoSort = document.getElementById("js-sort");
 const fax = document.querySelector("iframe");
+const searchForm = document.querySelector(".js-searchForm");
+const searchInput = searchForm.querySelector("input");
 
 const DB_URL = "http://id001.iptime.org:13000/api/";
 // const DB_URL = "http://localhost:13000/api/";
@@ -189,6 +191,25 @@ function loadMemosFromDB() {
     });
 }
 
+function handleSearch(event) {
+  event.preventDefault();
+  const searchValue = searchInput.value;
+  paintSearchValue(searchValue);
+}
+
+function paintSearchValue(searchValue) { //검색한 메모만 보여줌
+  if (searchValue === "") memoForm.classList.remove("hiding");
+  else memoForm.classList.add("hiding");
+
+  removeAllMemoDivs();
+  memos.forEach(function(memoObj) {
+    if (memoObj.title == searchValue || memoObj.content.match(searchValue)) {
+      const td = getMemoDivObj(memoObj);
+      memoTable.appendChild(td);
+    }
+  });
+}
+
 function addEventHandles() {
   memoForm.addEventListener("submit", handleSubmit);
   memoTextarea.addEventListener("focus", focusTextAreaHandle);
@@ -196,6 +217,7 @@ function addEventHandles() {
   memoTextarea.addEventListener("keyup", focusTextAreaHandle);
   memoSort.addEventListener("click", handleSort);
   document.onload = loadMemosFromDB();
+  searchInput.addEventListener("keyup", handleSearch);
 }
 
 function handleSort(event) {

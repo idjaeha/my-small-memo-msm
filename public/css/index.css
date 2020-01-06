@@ -154,3 +154,6 @@ input:hover {
   font-weight: bold;
   color: red;
 }
+.hiding {
+  display: none;
+}
