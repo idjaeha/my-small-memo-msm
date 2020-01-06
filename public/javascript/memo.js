@@ -50,9 +50,13 @@ function updateMemo(event) {
     }
   });
 
-  // sortMemos(div);
+  //해당 메모를 맨 앞으로 옮긴다.
+  memoTable.removeChild(div);
+  memoTable.prepend(div);
+
+  //TODO: 살짝 비효율적인 느낌이 든다. 더 생각해보자
+  updateMemos(updatedMemo);
   updateMemoToDB(updatedMemo);
-  //refreshMemos();
 }
 
 function removeAllMemoDivs() {
@@ -62,24 +66,27 @@ function removeAllMemoDivs() {
   }
 }
 
-function sortMemos(id) {
-  //수정 후 바뀐 결과대로 정렬 (작성순)
-  const index = memos.findIndex(i => i.id == id);
-  const temp = memos[index];
-  for (var i = 0; i < memos.length - index - 1; i++) {
-    memos[index + i] = memos[index + i + 1];
-  }
-  memos[memos.length - 1] = temp;
+function updateMemos(updatedMemo) {
+  // memos를 정렬한다.
+  const updatedMemos = memos.filter(function(memo) {
+    return memo.key !== updatedMemo.key;
+  });
+
+  updatedMemos.splice(0, 0, updatedMemo); // memos의 맨 앞에 업데이트된 메모를 추가한다.
+  memos = updatedMemos;
 }
 
 function saveMemosToDB() {
   // memos에 저장된 메모를 DB에 저장한다.
 }
 
-function paintMemo(memoObj) {
+function paintMemo(memoObj, isAppending = true) {
   // 받은 인자를 토대로 메모를 그린다.
+  // isAppending이 true일 경우 뒤에 그린다.
+  // isAppending이 false일 경우 앞에 그린다.
   const td = getMemoDivObj(memoObj);
-  memoTable.appendChild(td);
+  if (isAppending) memoTable.appendChild(td);
+  else memoTable.prepend(td);
 }
 
 function refreshMemos() {
@@ -87,8 +94,7 @@ function refreshMemos() {
   removeAllMemoDivs();
 
   memos.forEach(function(memoObj) {
-    const td = getMemoDivObj(memoObj);
-    memoTable.appendChild(td);
+    paintMemo(memoObj);
   });
 }
 
@@ -171,7 +177,7 @@ function handleSubmit(event) {
     date: key
   };
   pushMemo(memoObj);
-  paintMemo(memoObj);
+  paintMemo(memoObj, false);
   memoInput.value = "";
   memoTextarea.value = "";
   addMemoToDB(memoObj);
