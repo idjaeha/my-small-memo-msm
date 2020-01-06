@@ -31,14 +31,15 @@ function deleteMemo(event) {
 function updateMemo(event) {
   event.preventDefault();
   const btn = event.target;
-  const currentContent = btn.parentNode.querySelector("textarea").value;
-  const currentTitle = btn.parentNode.querySelector("input").value;
-  const currentDate = btn.parentNode.querySelector("h5");
-  const currentId = btn.parentNode.id;
+  const div = btn.parentNode;
+  const currentContent = div.querySelector("textarea").value;
+  const currentTitle = div.querySelector("input").value;
+  const currentDate = div.querySelector("h5");
+  const currentId = parseInt(div.id);
   let updatedMemo = null;
 
-  const now = new Date().toJSON();
-  currentDate.innerHTML = getTime(now);
+  const now = new Date().getTime();
+  currentDate.innerHTML = getParsedTime(now);
 
   memos.forEach(function(memo) {
     if (memo.key === currentId) {
@@ -49,9 +50,9 @@ function updateMemo(event) {
     }
   });
 
-  //sortMemos(currentId);
+  // sortMemos(div);
   updateMemoToDB(updatedMemo);
-  refreshMemos();
+  //refreshMemos();
 }
 
 function removeAllMemoDivs() {
@@ -116,7 +117,7 @@ function getMemoDivObj(memoObj) {
 
   title.value = memoObj.title;
   content.value = memoObj.content;
-  date.innerHTML = getTime(memoObj.date);
+  date.innerHTML = getParsedTime(memoObj.date);
   delBtn.innerHTML = "삭제";
   updateBtn.innerHTML = "수정";
   delBtn.addEventListener("click", deleteMemo);
@@ -141,7 +142,7 @@ function getMemoDivObj(memoObj) {
   return div;
 }
 
-function getTime(date = null) {
+function getParsedTime(date = null) {
   const curDate = date === null ? new Date() : new Date(date);
   const hours = curDate.getHours(),
     minutes = curDate.getMinutes(),
@@ -160,7 +161,7 @@ function getTime(date = null) {
 
 function handleSubmit(event) {
   event.preventDefault();
-  const key = new Date().toJSON();
+  const key = new Date().getTime();
   const memoObj = {
     key,
     writer: "jaeha",
@@ -197,15 +198,15 @@ function handleSearch(event) {
   paintSearchValue(searchValue);
 }
 
-function paintSearchValue(searchValue) { //검색한 메모만 보여줌
+function paintSearchValue(searchValue) {
+  //검색한 메모만 보여줌
   if (searchValue === "") memoForm.classList.remove("hiding");
   else memoForm.classList.add("hiding");
 
   removeAllMemoDivs();
   memos.forEach(function(memoObj) {
     if (memoObj.title == searchValue || memoObj.content.match(searchValue)) {
-      const td = getMemoDivObj(memoObj);
-      memoTable.appendChild(td);
+      paintMemo(memoObj);
     }
   });
 }
@@ -216,8 +217,8 @@ function addEventHandles() {
   memoTextarea.addEventListener("keydown", focusTextAreaHandle);
   memoTextarea.addEventListener("keyup", focusTextAreaHandle);
   memoSort.addEventListener("click", handleSort);
-  document.onload = loadMemosFromDB();
   searchInput.addEventListener("keyup", handleSearch);
+  document.onload = loadMemosFromDB();
 }
 
 function handleSort(event) {
