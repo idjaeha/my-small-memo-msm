@@ -6,15 +6,6 @@ body {
   background-color: rgb(249, 253, 255);
 }
 
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
-}
-
 .memoDiv,
 .loginDiv {
   display: none;
@@ -61,36 +52,7 @@ button:hover {
   border-radius: 5px;
 }
 
-textarea:hover,
-input:hover {
-  box-shadow: 0px 0px 3px 2px rgba(108, 159, 255, 0.4);
-}
-
-.red {
-  background-color: rgb(255, 101, 101);
-}
-.blue {
-  background-color: rgb(112, 112, 255);
-}
-.yellow {
-  background-color: rgb(255, 255, 117);
-}
-.green {
-  background-color: rgb(132, 255, 132);
-}
-.orange {
-  background-color: rgb(253, 205, 116);
-}
-
 .loginMsg {
   font-weight: bold;
   color: red;
-}
-.hiding {
-  display: none;
-}
-.showing {
-  display: flex;
-  align-items: center;
-  flex-direction: column;
 }

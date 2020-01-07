@@ -155,7 +155,10 @@ function handleSubmit(event) {
     writer: loggedInId,
     title: memoInput.value,
     content: memoTextarea.value,
-    color: COLORS[Math.floor(Math.random(COLORS_NUM) * 5)],
+    color:
+      currentColor === ""
+        ? COLORS[Math.floor(Math.random(COLORS_NUM) * 5)]
+        : currentColor,
     date: key
   };
   pushMemo(memoObj);
@@ -215,10 +218,6 @@ function handleSort(event) {
   //정렬버튼 클릭시
 }
 
-function init() {
-  addEventHandles();
-}
-
 function addMemoToDB(memoObj) {
   const url = `${DB_URL}memos`;
   const data = memoObj;
@@ -250,6 +249,73 @@ function postMsg(url, data) {
       // console.log("Success:", JSON.stringify(response));
     })
     .catch(error => console.error("Error:", error));
+}
+
+function selectColorHandle(event) {
+  const selectedColor = event.target;
+  COLORS.forEach(function(color) {
+    memoForm.classList.remove(color);
+  });
+  memoForm.classList.add(selectedColor.id);
+  currentColor = selectedColor.id;
+}
+
+function initColorPalette() {
+  for (let i = 0; i < COLORS_NUM; i++) {
+    const colorDiv = document.createElement("div");
+    colorDiv.id = COLORS[i];
+    colorDiv.classList.add(COLORS[i]);
+    colorDiv.classList.add("colorButton");
+    colorDiv.addEventListener("click", selectColorHandle);
+    colorPalette.appendChild(colorDiv);
+  }
+}
+
+function checkColorHandle(event) {
+  const colorDiv = event.target;
+  const checkedColor = colorDiv.id;
+  colorDiv.classList.toggle("checked");
+  const pos = checkedColors.findIndex(function(color) {
+    return color === checkedColor;
+  });
+
+  if (pos !== -1) {
+    checkedColors.splice(pos, 1);
+  } else {
+    checkedColors.push(checkedColor);
+  }
+
+  if (checkedColors.length !== 0) {
+    removeAllMemoDivs();
+    memos.forEach(function(memoObj) {
+      if (
+        checkedColors.some(function(color) {
+          return memoObj.color === color;
+        })
+      ) {
+        paintMemo(memoObj);
+      }
+    });
+  } else {
+    refreshMemos();
+  }
+}
+
+function initColorChecker() {
+  for (let i = 0; i < COLORS_NUM; i++) {
+    const colorDiv = document.createElement("div");
+    colorDiv.id = COLORS[i];
+    colorDiv.classList.add(COLORS[i]);
+    colorDiv.classList.add("colorButton");
+    colorDiv.addEventListener("click", checkColorHandle);
+    colorChecker.appendChild(colorDiv);
+  }
+}
+
+function init() {
+  initColorPalette();
+  initColorChecker();
+  addEventHandles();
 }
 
 init();

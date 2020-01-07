@@ -13,6 +13,8 @@ const memoInput = memoForm.querySelector("input");
 const memoTable = document.querySelector(".js-memoTable");
 const memoSort = document.getElementById("js-sort");
 const searchInput = document.querySelector(".js-search");
+const colorPalette = document.querySelector(".js-colorPalette");
+const colorChecker = document.querySelector(".js-colorChecker");
 
 const loginForm = document.querySelector(".js-loginForm");
 const idInput = loginForm.querySelector(".js-id");
@@ -26,3 +28,5 @@ const mainTitle = document.querySelector(".js-mainTitle");
 let loggedInId = "";
 let memos = [];
 let sort;
+let currentColor = "";
+let checkedColors = [];
