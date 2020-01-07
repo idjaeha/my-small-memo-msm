@@ -4,8 +4,7 @@ const memoInput = memoForm.querySelector("input");
 const memoTable = document.querySelector(".js-memoTable");
 const memoSort = document.getElementById("js-sort");
 const fax = document.querySelector("iframe");
-const searchForm = document.querySelector(".js-searchForm");
-const searchInput = searchForm.querySelector("input");
+const searchInput = document.querySelector(".js-search");
 
 const DB_URL = "http://id001.iptime.org:13000/api/";
 // const DB_URL = "http://localhost:13000/api/";
