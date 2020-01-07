@@ -32,10 +32,11 @@ function updateMemo(event) {
     }
   });
 
+  
   //해당 메모를 맨 앞으로 옮긴다.
   memoTable.removeChild(div);
-  memoTable.prepend(div);
-
+  isNew === false? memoTable.appendChild(div) : memoTable.prepend(div);
+  //isNew === true ? isNew = false : isNew = true;
   //TODO: 살짝 비효율적인 느낌이 든다. 더 생각해보자
   updateMemos(updatedMemo);
   updateMemoToDB(updatedMemo);
@@ -159,7 +160,7 @@ function handleSubmit(event) {
     date: key
   };
   pushMemo(memoObj);
-  paintMemo(memoObj, false);
+  isNew === false ? paintMemo(memoObj, true) : paintMemo(memoObj, false);
   memoInput.value = "";
   memoTextarea.value = "";
   addMemoToDB(memoObj);
@@ -185,6 +186,8 @@ function loadMemosFromDB() {
 
 function handleSearch(event) {
   event.preventDefault();
+  event.target.style.background = '#2588cf';
+  event.target.style.color = '#ffffff';
   const searchValue = searchInput.value;
   paintSearchValue(searchValue);
 }
@@ -202,6 +205,15 @@ function paintSearchValue(searchValue) {
   });
 }
 
+function blurSearchInput(event) {
+  event.target.style.background = '#b6d0fa';
+  event.target.style.color = '#5f95ed';
+}
+
+function togglebutton(event) {
+  sortMenu.classList.toggle('collapsed');
+}
+
 function addEventHandles() {
   memoForm.addEventListener("submit", handleSubmit);
   memoTextarea.addEventListener("focus", focusTextAreaHandle);
@@ -209,10 +221,19 @@ function addEventHandles() {
   memoTextarea.addEventListener("keyup", focusTextAreaHandle);
   memoSort.addEventListener("click", handleSort);
   searchInput.addEventListener("keyup", handleSearch);
+  searchInput.addEventListener("blur", blurSearchInput);
+  toggleButton.addEventListener("click", togglebutton);
 }
 
-function handleSort(event) {
-  //정렬버튼 클릭시
+function handleSort(event) { //isNew : 최신
+  isNew === true ? isNew = false : isNew = true;
+  console.log(isNew); 
+  const sorts = memos.slice();
+  isNew === false ? sorts.reverse() : sorts;
+  removeAllMemoDivs();
+  sorts.forEach(function(memoObj){
+    paintMemo(memoObj);
+  });
 }
 
 function init() {

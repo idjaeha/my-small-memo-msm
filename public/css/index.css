@@ -94,3 +94,14 @@ input:hover {
   align-items: center;
   flex-direction: column;
 }
+.js-search {
+  background-color : #b6d0fa;
+  width: 200px;
+  height: 30px;
+  font-family: monospace;;
+}
+.js-search::placeholder {
+  color :#5f95ed;
+  font-family: monospace;;
+}
+

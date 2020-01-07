@@ -13,6 +13,8 @@ const memoInput = memoForm.querySelector("input");
 const memoTable = document.querySelector(".js-memoTable");
 const memoSort = document.getElementById("js-sort");
 const searchInput = document.querySelector(".js-search");
+const toggleButton = document.querySelector(".js-toggle");
+const sortMenu = document.querySelector(".js-section.collapsible");
 
 const loginForm = document.querySelector(".js-loginForm");
 const idInput = loginForm.querySelector(".js-id");
@@ -25,4 +27,4 @@ const mainTitle = document.querySelector(".js-mainTitle");
 
 let loggedInId = "";
 let memos = [];
-let sort;
+let isNew = true;
