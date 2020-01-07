@@ -41,13 +41,6 @@ function updateMemo(event) {
   updateMemoToDB(updatedMemo);
 }
 
-function removeAllMemoDivs() {
-  // 화면에 존재하는 모든 메모 div를 삭제한다.
-  while (memoTable.hasChildNodes()) {
-    memoTable.removeChild(memoTable.firstChild);
-  }
-}
-
 function updateMemos(updatedMemo) {
   // memos를 정렬한다.
   const updatedMemos = memos.filter(function(memo) {
@@ -58,8 +51,11 @@ function updateMemos(updatedMemo) {
   memos = updatedMemos;
 }
 
-function saveMemosToDB() {
-  // memos에 저장된 메모를 DB에 저장한다.
+function removeAllMemoDivs() {
+  // 화면에 존재하는 모든 메모 div를 삭제한다.
+  while (memoTable.hasChildNodes()) {
+    memoTable.removeChild(memoTable.firstChild);
+  }
 }
 
 function paintMemo(memoObj, isAppending = true) {

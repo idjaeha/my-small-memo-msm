@@ -11,48 +11,54 @@
     <title>My small Memo</title>
   </head>
   <body>
-    <div class="js-mainTitle mainTitle">나의 작은 메모장</div>
+    <div class="container">
+      <div class="js-mainTitle mainTitle">나의 작은 메모장</div>
 
-    <div class="js-loginDiv loginDiv showing">
-      <form class="js-loginForm loginForm">
-        <input class="js-id" type="text" placeholder="Write Your ID" /> <br />
-        <input
-          class="js-password"
-          type="password"
-          placeholder="Write Your PWD"
-        />
-        <br />
-        <span class="js-loginMsg loginMsg"></span>
-      </form>
-    </div>
-
-    <div class="js-memoDiv memoDiv">
-      <button class="js-logoutBtn logout">Logout</button>
-      <input class="js-search" type="text" placeholder="키워드를 검색하세요" />
-
-      <form class="js-memoForm memoForm">
-        <input
-          class="js-memoTitle memoTitle"
-          type="text"
-          placeholder="Write title"
-        />
-        <div class="js-colorPalette colorPalette"></div>
-        <br />
-        <textarea
-          class="js-memoContent"
-          placeholder="Write your memo"
-        ></textarea>
-        <br />
-        <button class="js-memoSubmit">Enter</button>
-      </form>
-      <br />
-      <div class="js-sortDiv sortDiv">
-        <button id="js-sort">정렬</button>
-        <div class="js-colorChecker"></div>
+      <div class="js-loginDiv loginDiv showing">
+        <form class="js-loginForm loginForm">
+          <input class="js-id" type="text" placeholder="Write Your ID" /> <br />
+          <input
+            class="js-password"
+            type="password"
+            placeholder="Write Your PWD"
+          />
+          <br />
+          <span class="js-loginMsg loginMsg"></span>
+        </form>
       </div>
 
-      <div class="js-memoListDiv memoListDiv">
-        <div class="js-memoTable memoTable"></div>
+      <div class="js-memoDiv memoDiv">
+        <div class="js-sortDiv sortDiv">
+          <input
+            class="js-search"
+            type="text"
+            placeholder="키워드를 검색하세요"
+          />
+          <div class="js-colorChecker"></div>
+        </div>
+        <button class="js-logoutBtn logout">Logout</button>
+
+        <form class="js-memoForm memoForm">
+          <input
+            class="js-memoTitle memoTitle"
+            type="text"
+            placeholder="Write title"
+          />
+          <div class="js-colorPalette colorPalette"></div>
+          <br />
+          <textarea
+            class="js-memoContent"
+            placeholder="Write your memo"
+          ></textarea>
+          <br />
+          <button class="js-memoSubmit">Enter</button>
+        </form>
+        <br />
+        <button id="js-sort">정렬</button>
+
+        <div class="js-memoListDiv memoListDiv">
+          <div class="js-memoTable memoTable"></div>
+        </div>
       </div>
     </div>
 

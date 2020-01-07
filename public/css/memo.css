@@ -69,14 +69,22 @@
 
 .sortDiv {
   display: flex;
-  flex-direction: column;
+  align-items: flex-start;
+  flex-direction: row;
+  align-items: center;
 }
 
 .sortDiv > div {
   display: flex;
+  margin-left: 5px;
   margin-top: 3px;
   margin-bottom: 3px;
 }
+
+.sortDiv > input {
+  display: flex;
+}
+
 .checked {
   transform: scale(1.25);
 }

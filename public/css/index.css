@@ -1,9 +1,17 @@
 body {
+  background-color: rgb(249, 253, 255);
+}
+
+.container {
+  position: relative;
   display: flex;
   align-items: center;
   flex-direction: column;
   font-family: Verdana, Geneva, Tahoma, sans-serif;
   background-color: rgb(249, 253, 255);
+  width: 1080px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .memoDiv,
@@ -27,6 +35,12 @@ button {
 button:active,
 .logout:active {
   transform: scale(0.95);
+}
+
+.logout {
+  position: absolute;
+  top: 10px;
+  right: 10px;
 }
 
 button:hover {
