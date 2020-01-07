@@ -1,20 +1,3 @@
-const memoForm = document.querySelector(".js-memoForm");
-const memoTextarea = memoForm.querySelector("textarea");
-const memoInput = memoForm.querySelector("input");
-const memoTable = document.querySelector(".js-memoTable");
-const memoSort = document.getElementById("js-sort");
-const fax = document.querySelector("iframe");
-const searchInput = document.querySelector(".js-search");
-
-const DB_URL = "http://id001.iptime.org:13000/api/";
-// const DB_URL = "http://localhost:13000/api/";
-const MEMOS_LS = "memos";
-const COLORS = ["red", "blue", "yellow", "green", "orange"];
-const COLORS_NUM = COLORS.length;
-
-let memos = [];
-let sort;
-
 function deleteMemo(event) {
   event.preventDefault();
   const btn = event.target;
@@ -169,7 +152,7 @@ function handleSubmit(event) {
   const key = new Date().getTime();
   const memoObj = {
     key,
-    writer: "jaeha",
+    writer: loggedInId,
     title: memoInput.value,
     content: memoTextarea.value,
     color: COLORS[Math.floor(Math.random(COLORS_NUM) * 5)],
@@ -181,9 +164,12 @@ function handleSubmit(event) {
   memoTextarea.value = "";
   addMemoToDB(memoObj);
 }
+
 function loadMemosFromDB() {
   // DB에서 메모들을 가져와 memos에 저장한다.
-  fetch(`${DB_URL}memos`, { method: "GET" })
+  const url = `${DB_URL}memos/${loggedInId}`;
+
+  fetch(url, { method: "GET" })
     .then(function(response) {
       return response.json();
     })
@@ -223,7 +209,6 @@ function addEventHandles() {
   memoTextarea.addEventListener("keyup", focusTextAreaHandle);
   memoSort.addEventListener("click", handleSort);
   searchInput.addEventListener("keyup", handleSearch);
-  document.onload = loadMemosFromDB();
 }
 
 function handleSort(event) {
@@ -235,103 +220,36 @@ function init() {
 }
 
 function addMemoToDB(memoObj) {
-  const form = document.createElement("form");
-  const title = document.createElement("input");
-  const key = document.createElement("input");
-  const content = document.createElement("input");
-  const color = document.createElement("input");
-  const writer = document.createElement("input");
-  const date = document.createElement("input");
-  const fax = document.querySelector("iframe");
-
-  title.type = "hidden";
-  key.type = "hidden";
-  content.type = "hidden";
-  color.type = "hidden";
-  writer.type = "hidden";
-  date.type = "hidden";
-
-  title.name = "title";
-  key.name = "key";
-  content.name = "content";
-  color.name = "color";
-  writer.name = "writer";
-  date.name = "date";
-
-  title.value = memoObj.title;
-  key.value = memoObj.key;
-  content.value = memoObj.content;
-  color.value = memoObj.color;
-  writer.value = memoTitle.id;
-  date.value = memoObj.date;
-
-  fax.appendChild(form);
-  form.appendChild(title);
-  form.appendChild(key);
-  form.appendChild(content);
-  form.appendChild(color);
-  form.appendChild(writer);
-  form.appendChild(date);
-
-  form.setAttribute("charset", "UTF-8");
-  form.action = DB_URL + "memos";
-  form.method = "POST";
-  form.target = "fax";
-  form.submit();
-  form.remove();
+  const url = `${DB_URL}memos`;
+  const data = memoObj;
+  postMsg(url, data);
 }
 
 function deleteMemoToDB(currentKey) {
-  const form = document.createElement("form");
-  const key = document.createElement("input");
-
-  key.type = "hidden";
-  key.name = "key";
-  key.value = currentKey;
-
-  fax.appendChild(form);
-  form.appendChild(key);
-
-  form.setAttribute("charset", "UTF-8");
-  form.action = DB_URL + "memos/delete";
-  form.method = "POST";
-  form.target = "fax";
-  form.submit();
-  form.remove();
+  const url = `${DB_URL}memos/delete`;
+  const data = { key: currentKey };
+  postMsg(url, data);
 }
 
 function updateMemoToDB(memoObj) {
-  const form = document.createElement("form");
-  const key = document.createElement("input");
-  const title = document.createElement("input");
-  const content = document.createElement("input");
-  const date = document.createElement("input");
+  const url = `${DB_URL}memos/update`;
+  const data = memoObj;
+  postMsg(url, data);
+}
 
-  key.type = "hidden";
-  key.name = "key";
-  key.value = memoObj.key;
-  title.type = "hidden";
-  title.name = "title";
-  title.value = memoObj.title;
-  content.type = "hidden";
-  content.name = "content";
-  content.value = memoObj.content;
-  date.type = "hidden";
-  date.name = "date";
-  date.value = memoObj.date;
-
-  fax.appendChild(form);
-  form.appendChild(key);
-  form.appendChild(title);
-  form.appendChild(content);
-  form.appendChild(date);
-
-  form.setAttribute("charset", "UTF-8");
-  form.action = DB_URL + "memos/update";
-  form.method = "POST";
-  form.target = "fax";
-  form.submit();
-  form.remove();
+function postMsg(url, data) {
+  fetch(url, {
+    method: "POST",
+    body: JSON.stringify(data),
+    headers: {
+      "Content-Type": "application/json"
+    }
+  })
+    .then(res => res.json())
+    .then(response => {
+      // console.log("Success:", JSON.stringify(response));
+    })
+    .catch(error => console.error("Error:", error));
 }
 
 init();

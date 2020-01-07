@@ -27,21 +27,6 @@ iframe,
   flex-direction: column;
 }
 
-.memoForm,
-.memoObj {
-  all: unset;
-  background-color: rgba(221, 221, 221, 0.8);
-  display: inline-block;
-  padding: 3px;
-  margin: 5px;
-  width: 250px;
-  border-style: solid;
-  border-width: 1px;
-  border-radius: 10px;
-  box-shadow: 0 2px 3px;
-  animation: fadeIn 0.3s linear;
-}
-
 button {
   all: unset;
   background-color: white;
@@ -66,6 +51,8 @@ button {
   margin-left: 10px;
   cursor: pointer;
   text-align: center;
+  margin: 20px;
+  height: 30px;
 }
 
 button:active,
@@ -77,44 +64,11 @@ button:hover {
   box-shadow: 0px 0px 3px 2px rgba(108, 159, 255, 0.4);
 }
 
-.memoTitle {
+.mainTitle {
   display: flex;
-  font-size: 30px;
-}
-
-.memoTitleBar {
-  display: flex;
-  flex-direction: row;
-  padding: 10px;
-}
-
-.memoListDiv {
-  width: 1080px;
-}
-
-.memoTable {
-  display: flex;
-  align-items: flex-start;
-  flex-direction: row;
-  flex-wrap: wrap;
-}
-
-.memoForm > input,
-.memoObjTitle {
-  all: unset;
-  width: 160px;
+  font-size: 40px;
   font-weight: bold;
-}
-
-.memoForm > textarea,
-.memoObjContent {
-  all: unset;
-  width: 300px;
-  height: 30px;
-  overflow-x: hidden;
-  overflow-y: hidden;
-  overflow-wrap: break-word;
-  width: 200px;
+  margin: 10px;
 }
 
 .loginForm > input {

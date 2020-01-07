@@ -4,11 +4,13 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <link rel="stylesheet" type="text/css" href="public/css/memo.css" />
     <link rel="stylesheet" type="text/css" href="public/css/index.css" />
     <title>My small Memo</title>
   </head>
   <body>
-    <h1>나의 작은 메모장</h1>
+    <div class="js-mainTitle mainTitle">나의 작은 메모장</div>
+
     <div class="js-loginDiv loginDiv showing">
       <form class="js-loginForm loginForm">
         <input class="js-id" type="text" placeholder="Write Your ID" /> <br />
@@ -23,14 +25,16 @@
     </div>
 
     <div class="js-memoDiv memoDiv">
-      <div class="js-memoTitleBar memoTitleBar">
-        <div class="js-memoTitle memoTitle">Lalala's Small Memo</div>
-        <button class="js-logoutBtn logout">Logout</button>
-      </div>
+      <button class="js-logoutBtn logout">Logout</button>
       <input class="js-search" type="text" placeholder="키워드를 검색하세요" />
 
       <form class="js-memoForm memoForm">
         <input class="js-memoTitle" type="text" placeholder="Write title" />
+        <input type="checkbox" name="red" id="color" />
+        <input type="checkbox" name="blue" id="color" />
+        <input type="checkbox" name="yellow" id="color" />
+        <input type="checkbox" name="green" id="color" />
+        <input type="checkbox" name="orange" id="color" />
         <br />
         <textarea
           class="js-memoContent"
@@ -47,8 +51,8 @@
       </div>
     </div>
 
-    <iframe name="fax" class="js-fax"></iframe>
-    <script src="public/javascript/login.js"></script>
+    <script src="public/javascript/define.js"></script>
     <script src="public/javascript/memo.js"></script>
+    <script src="public/javascript/login.js"></script>
   </body>
 </html>

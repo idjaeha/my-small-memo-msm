@@ -1,0 +1,42 @@
+.memoForm,
+.memoObj {
+  all: unset;
+  background-color: rgba(221, 221, 221, 0.8);
+  display: inline-block;
+  padding: 3px;
+  margin: 5px;
+  width: 250px;
+  border-style: solid;
+  border-width: 1px;
+  border-radius: 10px;
+  box-shadow: 0 2px 3px;
+  animation: fadeIn 0.3s linear;
+}
+.memoListDiv {
+  width: 1080px;
+}
+
+.memoTable {
+  display: flex;
+  align-items: flex-start;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+.memoForm > input,
+.memoObjTitle {
+  all: unset;
+  width: 160px;
+  font-weight: bold;
+}
+
+.memoForm > textarea,
+.memoObjContent {
+  all: unset;
+  width: 300px;
+  height: 30px;
+  overflow-x: hidden;
+  overflow-y: hidden;
+  overflow-wrap: break-word;
+  width: 200px;
+}
