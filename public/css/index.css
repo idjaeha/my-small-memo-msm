@@ -15,16 +15,9 @@ body {
   }
 }
 
-iframe,
 .memoDiv,
 .loginDiv {
   display: none;
-}
-
-.showing {
-  display: flex;
-  align-items: center;
-  flex-direction: column;
 }
 
 button {
@@ -38,21 +31,6 @@ button {
   border-width: 1px;
   border-radius: 3px;
   margin: 2px;
-}
-
-.logout {
-  display: flex;
-  all: unset;
-  background-color: white;
-  box-shadow: 0 2px 3px;
-  border-width: 1px;
-  border-radius: 10px;
-  padding: 3px;
-  margin-left: 10px;
-  cursor: pointer;
-  text-align: center;
-  margin: 20px;
-  height: 30px;
 }
 
 button:active,
@@ -110,4 +88,9 @@ input:hover {
 }
 .hiding {
   display: none;
+}
+.showing {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
 }

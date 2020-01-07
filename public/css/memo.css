@@ -12,6 +12,11 @@
   box-shadow: 0 2px 3px;
   animation: fadeIn 0.3s linear;
 }
+
+.memoForm {
+  width: 300px;
+}
+
 .memoListDiv {
   width: 1080px;
 }
@@ -23,7 +28,7 @@
   flex-wrap: wrap;
 }
 
-.memoForm > input,
+.memoForm > .memoTitle,
 .memoObjTitle {
   all: unset;
   width: 160px;

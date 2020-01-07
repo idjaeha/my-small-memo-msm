@@ -29,12 +29,16 @@
       <input class="js-search" type="text" placeholder="키워드를 검색하세요" />
 
       <form class="js-memoForm memoForm">
-        <input class="js-memoTitle" type="text" placeholder="Write title" />
-        <input type="checkbox" name="red" id="color" />
-        <input type="checkbox" name="blue" id="color" />
-        <input type="checkbox" name="yellow" id="color" />
-        <input type="checkbox" name="green" id="color" />
-        <input type="checkbox" name="orange" id="color" />
+        <input
+          class="js-memoTitle memoTitle"
+          type="text"
+          placeholder="Write title"
+        />
+        <input type="radio" name="color" value="red" class="red" />
+        <input type="radio" name="color" value="blue" class="blue" />
+        <input type="radio" name="color" value="yellow" class="yellow" />
+        <input type="radio" name="color" value="green" class="green" />
+        <input type="radio" name="color" value="orange" class="orange" />
         <br />
         <textarea
           class="js-memoContent"
