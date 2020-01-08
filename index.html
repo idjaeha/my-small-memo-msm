@@ -12,9 +12,8 @@
   </head>
   <body>
     <div class="container">
-      <div class="js-mainTitle mainTitle">나의 작은 메모장</div>
-
       <div class="js-loginDiv loginDiv showing">
+        <div class="mainTitle">나의 작은 메모장</div>
         <form class="js-loginForm loginForm">
           <input class="js-id" type="text" placeholder="Write Your ID" /> <br />
           <input
@@ -28,9 +27,10 @@
       </div>
 
       <div class="js-memoDiv memoDiv">
-        <div class="js-sortDiv sortDiv">
+        <div class="js-sortDiv memoTitleBar">
+          <div class="mainTitle">나의 작은 메모장</div>
           <input
-            class="js-search"
+            class="js-search search"
             type="text"
             placeholder="키워드를 검색하세요"
           />
@@ -54,7 +54,7 @@
           <button class="js-memoSubmit">Enter</button>
         </form>
         <br />
-        <button id="js-sort">정렬</button>
+        <button class="js-sort">New</button>
 
         <div class="js-memoListDiv memoListDiv">
           <div class="js-memoTable memoTable"></div>

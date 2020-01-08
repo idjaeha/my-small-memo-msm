@@ -32,9 +32,9 @@ function updateMemo(event) {
     }
   });
 
-  //해당 메모를 맨 앞으로 옮긴다.
+  //해당 메모를 정렬에 맞게 배치한다.
   memoTable.removeChild(div);
-  memoTable.prepend(div);
+  paintMemo(div, !isNew);
 
   //TODO: 살짝 비효율적인 느낌이 든다. 더 생각해보자
   updateMemos(updatedMemo);
@@ -47,7 +47,7 @@ function updateMemos(updatedMemo) {
     return memo.key !== updatedMemo.key;
   });
 
-  updatedMemos.splice(0, 0, updatedMemo); // memos의 맨 앞에 업데이트된 메모를 추가한다.
+  updatedMemos.unshift(updatedMemo); // memos의 맨 앞에 업데이트된 메모를 추가한다.
   memos = updatedMemos;
 }
 
@@ -60,11 +60,13 @@ function removeAllMemoDivs() {
 
 function paintMemo(memoObj, isAppending = true) {
   // 받은 인자를 토대로 메모를 그린다.
+  // 만약 받은 인자가 memoObj Object 일 경우, 그를 토대로 div를 생성한다.
+  // 만약 받은 인자가 div 객체일 경우 그대로 사용한다.
   // isAppending이 true일 경우 뒤에 그린다.
   // isAppending이 false일 경우 앞에 그린다.
-  const td = getMemoDivObj(memoObj);
-  if (isAppending) memoTable.appendChild(td);
-  else memoTable.prepend(td);
+  const div = memoObj.tagName === "DIV" ? memoObj : getMemoDivObj(memoObj);
+  if (isAppending) memoTable.appendChild(div);
+  else memoTable.prepend(div);
 }
 
 function refreshMemos() {
@@ -153,8 +155,8 @@ function handleSubmit(event) {
         : currentColor,
     date: key
   };
-  memos.push(memoObj);
-  paintMemo(memoObj, false);
+  memos.unshift(memoObj);
+  paintMemo(memoObj, !isNew);
   memoInput.value = "";
   memoTextarea.value = "";
   addMemoToDB(memoObj);
@@ -209,7 +211,12 @@ function addEventHandles() {
 }
 
 function handleSort(event) {
-  //정렬버튼 클릭시
+  // isNew === true : 최신 순서대로
+  // isNew === false : 오래된 순서대로
+  event.preventDefault();
+  isNew = !isNew;
+  memoSort.innerText = isNew ? "New" : "Old";
+  paintMemos();
 }
 
 function addMemoToDB(memoObj) {
@@ -325,12 +332,11 @@ function paintMemos() {
 
   if (pickedMemos === memos) {
     memoForm.classList.remove("hiding");
-  } else {
-    removeAllMemoDivs();
-    pickedMemos.forEach(function(memo) {
-      paintMemo(memo);
-    });
   }
+  removeAllMemoDivs();
+  pickedMemos.forEach(function(memo) {
+    paintMemo(memo, isNew);
+  });
 }
 
 function init() {

@@ -7,7 +7,6 @@ function loginSuccessful(id, pwd) {
 
   loginDiv.classList.remove("showing");
   memoDiv.classList.add("showing");
-  mainTitle.innerText = `${id}의 작은 메모장`;
   loggedInId = id;
   const loginObj = {
     id,
@@ -88,7 +87,6 @@ function handleLogout(event) {
   removeAllMemoDivs();
   loggedInId = "";
   memos = [];
-  mainTitle.innerText = TITLE;
 }
 
 function init() {

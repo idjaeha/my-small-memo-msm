@@ -67,24 +67,42 @@
   opacity: 0.5;
 }
 
-.sortDiv {
+.memoTitleBar {
   display: flex;
   align-items: flex-start;
   flex-direction: row;
   align-items: center;
 }
 
-.sortDiv > div {
+.memoTitleBar > div {
   display: flex;
   margin-left: 5px;
   margin-top: 3px;
   margin-bottom: 3px;
 }
 
-.sortDiv > input {
+.memoTitleBar > input {
   display: flex;
 }
 
 .checked {
   transform: scale(1.25);
+}
+
+.memoTitleBar {
+  background-color: rgba(221, 221, 221, 0.8);
+  padding: 5px;
+  border-radius: 8px;
+  border-style: solid;
+  border-width: 1px;
+  margin-bottom: 5px;
+  padding-left: 10px;
+  padding-right: 10px;
+  box-shadow: 0 2px 3px;
+}
+
+.memoTitleBar > input[type="text"] {
+  all: unset;
+  margin-left: 10px;
+  width: 200px;
 }
