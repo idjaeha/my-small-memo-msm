@@ -4,7 +4,7 @@ function deleteMemo(event) {
   const td = btn.parentNode;
   memoTable.removeChild(td);
   const cleanMemos = memos.filter(function(memo) {
-    return memo.key !== td.id;
+    return memo.key !== parseInt(td.id);
   });
   memos = cleanMemos;
   deleteMemoToDB(td.id);
@@ -76,11 +76,6 @@ function refreshMemos() {
   });
 }
 
-function pushMemo(memoObj) {
-  //받은 memo를 memos에 push 한다.
-  memos.push(memoObj);
-}
-
 function focusTextAreaHandle(event) {
   event.target.style.height = "0px";
   event.target.style.height = 11 + event.target.scrollHeight + "px";
@@ -127,6 +122,7 @@ function getMemoDivObj(memoObj) {
 }
 
 function getParsedTime(date = null) {
+  //YYYY년 MM월 DD일 시간 순으로 나타낸다.
   const curDate = date === null ? new Date() : new Date(date);
   const hours = curDate.getHours(),
     minutes = curDate.getMinutes(),
@@ -157,7 +153,7 @@ function handleSubmit(event) {
         : currentColor,
     date: key
   };
-  pushMemo(memoObj);
+  memos.push(memoObj);
   paintMemo(memoObj, false);
   memoInput.value = "";
   memoTextarea.value = "";
@@ -175,7 +171,7 @@ function loadMemosFromDB() {
     .then(function(json) {
       if (json !== null) {
         json.forEach(function(memoObj) {
-          pushMemo(memoObj);
+          memos.push(memoObj);
         });
         refreshMemos();
       }
@@ -184,21 +180,23 @@ function loadMemosFromDB() {
 
 function handleSearch(event) {
   event.preventDefault();
-  const searchValue = searchInput.value;
-  paintSearchValue(searchValue);
+  paintMemos();
 }
 
-function paintSearchValue(searchValue) {
+function getSearchMemos(receivedMemos) {
   //검색한 메모만 보여줌
-  if (searchValue === "") memoForm.classList.remove("hiding");
-  else memoForm.classList.add("hiding");
+  const searchedMemos = [];
+  const searchValue = searchInput.value;
+  if (searchValue === "") {
+    return receivedMemos;
+  }
 
-  removeAllMemoDivs();
-  memos.forEach(function(memoObj) {
+  receivedMemos.forEach(function(memoObj) {
     if (memoObj.title == searchValue || memoObj.content.match(searchValue)) {
-      paintMemo(memoObj);
+      searchedMemos.push(memoObj);
     }
   });
+  return searchedMemos;
 }
 
 function addEventHandles() {
@@ -268,33 +266,43 @@ function initColorPalette() {
 }
 
 function checkColorHandle(event) {
+  // 메모의 색깔별로 체크하여 보여주는 핸들
   const colorDiv = event.target;
   const checkedColor = colorDiv.id;
   colorDiv.classList.toggle("checked");
+  // 현재 해당 색깔이 존재하는지 찾는다.
   const pos = checkedColors.findIndex(function(color) {
     return color === checkedColor;
   });
 
+  // 색깔을 토글 형식으로 구현한다.
   if (pos !== -1) {
     checkedColors.splice(pos, 1);
   } else {
     checkedColors.push(checkedColor);
   }
 
+  paintMemos();
+}
+
+function getCheckedColorMemos(receivedMemos) {
+  // 체크된 색 메모들을 내보냅니다.
+  const checkedMemos = [];
   if (checkedColors.length !== 0) {
     removeAllMemoDivs();
-    memos.forEach(function(memoObj) {
+    receivedMemos.forEach(function(memoObj) {
       if (
         checkedColors.some(function(color) {
           return memoObj.color === color;
         })
       ) {
-        paintMemo(memoObj);
+        checkedMemos.push(memoObj);
       }
     });
   } else {
-    refreshMemos();
+    return receivedMemos;
   }
+  return checkedMemos;
 }
 
 function initColorChecker() {
@@ -305,6 +313,23 @@ function initColorChecker() {
     colorDiv.classList.add("colorButton");
     colorDiv.addEventListener("click", checkColorHandle);
     colorChecker.appendChild(colorDiv);
+  }
+}
+
+function paintMemos() {
+  // 조건에 해당하는 메모들을 그린다.
+  memoForm.classList.add("hiding");
+  let pickedMemos;
+  pickedMemos = getCheckedColorMemos(memos);
+  pickedMemos = getSearchMemos(pickedMemos);
+
+  if (pickedMemos === memos) {
+    memoForm.classList.remove("hiding");
+  } else {
+    removeAllMemoDivs();
+    pickedMemos.forEach(function(memo) {
+      paintMemo(memo);
+    });
   }
 }
 
