@@ -12,10 +12,11 @@ const memoTextarea = memoForm.querySelector("textarea");
 const memoInput = memoForm.querySelector("input");
 const memoTable = document.querySelector(".js-memoTable");
 const memoSort = document.querySelector(".js-sort");
+const memoSubmitDiv = document.querySelector(".js-memoSubmitDiv");
 const searchInput = document.querySelector(".js-search");
 const colorPalette = document.querySelector(".js-colorPalette");
 const colorChecker = document.querySelector(".js-colorChecker");
-const toggleButton = document.querySelector(".js-toggle");
+const backgroundForFocusing = document.querySelector(".js-backgroundForFocus");
 
 const loginForm = document.querySelector(".js-loginForm");
 const idInput = loginForm.querySelector(".js-id");
@@ -30,3 +31,6 @@ let memos = [];
 let currentColor = "";
 let checkedColors = [];
 let isNew = true;
+let focusedDiv = null;
+
+memoSubmitDiv.setAttribute("tabindex", "0");
