@@ -87,9 +87,14 @@ function handleBlurTextarea(event) {
 }
 
 function handleFocusDiv(event) {
+  if (event.target.tagName === "BUTTON") {
+    handleFocusQuit(event);
+    return;
+  }
   this.classList.add("zoomIn");
   focusedDiv = this;
   backgroundForFocusing.classList.add("backgroundForFocusActive");
+  backgroundForFocusing.classList.remove("hiding");
 }
 
 function getMemoDivObj(memoObj) {
@@ -119,9 +124,7 @@ function getMemoDivObj(memoObj) {
   content.addEventListener("keydown", handleFocusTextarea);
   content.addEventListener("focus", handleFocusTextarea);
   content.addEventListener("blur", handleBlurTextarea);
-
-  div.setAttribute("tabindex", "0");
-  div.addEventListener("focus", handleFocusDiv);
+  div.addEventListener("click", handleFocusDiv);
 
   div.appendChild(title);
   div.appendChild(updateBtn);
@@ -211,20 +214,23 @@ function getSearchMemos(receivedMemos) {
   return searchedMemos;
 }
 
-function addEventHandles() {
-  memoForm.addEventListener("submit", handleSubmit);
-  memoForm.addEventListener("submit", handleSubmit);
-  memoTextarea.addEventListener("focus", handleFocusTextarea);
-  memoSubmitDiv.addEventListener("focus", handleFocusDiv);
-  memoTextarea.addEventListener("keydown", handleFocusTextarea);
-  memoTextarea.addEventListener("keyup", handleFocusTextarea);
-  memoSort.addEventListener("click", handleSort);
-  searchInput.addEventListener("keyup", handleSearch);
-  backgroundForFocusing.addEventListener("click", function(event) {
+function handleFocusQuit(event) {
+  backgroundForFocusing.classList.add("hiding");
+  backgroundForFocusing.classList.remove("backgroundForFocusActive");
+  if (focusedDiv !== null) {
     focusedDiv.classList.remove("zoomIn");
     focusedDiv = null;
-    event.target.classList.remove("backgroundForFocusActive");
-  });
+  }
+}
+
+function addEventHandles() {
+  memoForm.addEventListener("submit", handleSubmit);
+  memoTextarea.addEventListener("focus", handleFocusTextarea);
+  memoTextarea.addEventListener("keydown", handleFocusTextarea);
+  memoTextarea.addEventListener("keyup", handleFocusTextarea);
+  searchInput.addEventListener("keyup", handleSearch);
+  memoSort.addEventListener("click", handleSort);
+  backgroundForFocusing.addEventListener("click", handleFocusQuit);
 }
 
 function handleSort(event) {

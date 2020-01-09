@@ -110,15 +110,11 @@
 .zoomIn {
   transform: scale(2);
   z-index: 2;
-  position: absolute;
+  position: fixed;
   display: block;
-  margin: 0px;
-  top: 50%;
-  right: 50%;
-}
-
-.backgroundForFocus {
-  display: none;
+  left: 0px;
+  right: 0px;
+  margin: auto;
 }
 
 .backgroundForFocusActive {

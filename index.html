@@ -11,7 +11,7 @@
     <title>My small Memo</title>
   </head>
   <body>
-    <div class="js-backgroundForFocus backgroundForFocus"></div>
+    <div class="js-backgroundForFocus hiding"></div>
     <div class="container">
       <div class="js-loginDiv loginDiv showing">
         <div class="mainTitle">나의 작은 메모장</div>
@@ -37,22 +37,22 @@
           <div class="js-colorChecker"></div>
         </div>
         <button class="js-logoutBtn logout">Logout</button>
-        <div class="js-memoSubmitDiv">
-          <form class="js-memoForm memoForm">
-            <input
-              class="js-memoTitle memoTitle"
-              type="text"
-              placeholder="Write title"
-            />
-            <div class="js-colorPalette colorPalette"></div>
-            <textarea
-              class="js-memoContent"
-              placeholder="Write your memo"
-            ></textarea
-            ><br />
-            <button class="js-memoSubmit">Enter</button>
-          </form>
-        </div>
+
+        <form class="js-memoForm memoForm">
+          <input
+            class="js-memoTitle memoTitle"
+            type="text"
+            placeholder="Write title"
+          />
+          <div class="js-colorPalette colorPalette"></div>
+          <textarea
+            class="js-memoContent"
+            placeholder="Write your memo"
+          ></textarea
+          ><br />
+          <button class="js-memoSubmit">Enter</button>
+        </form>
+
         <button class="js-sort">New</button>
 
         <div class="js-memoListDiv memoListDiv">

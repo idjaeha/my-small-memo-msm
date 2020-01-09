@@ -12,7 +12,6 @@ const memoTextarea = memoForm.querySelector("textarea");
 const memoInput = memoForm.querySelector("input");
 const memoTable = document.querySelector(".js-memoTable");
 const memoSort = document.querySelector(".js-sort");
-const memoSubmitDiv = document.querySelector(".js-memoSubmitDiv");
 const searchInput = document.querySelector(".js-search");
 const colorPalette = document.querySelector(".js-colorPalette");
 const colorChecker = document.querySelector(".js-colorChecker");
@@ -32,5 +31,3 @@ let currentColor = "";
 let checkedColors = [];
 let isNew = true;
 let focusedDiv = null;
-
-memoSubmitDiv.setAttribute("tabindex", "0");
