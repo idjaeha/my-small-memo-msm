@@ -10,10 +10,16 @@ function deleteMemo(event) {
   deleteMemoToDB(td.id);
 }
 
-function updateMemo(event) {
-  event.preventDefault();
-  const btn = event.target;
-  const div = btn.parentNode;
+function updateMemo(event, curDiv = null) {
+  let div;
+  if (!curDiv) {
+    event.preventDefault();
+    const btn = event.target;
+    div = btn.parentNode;
+  } else {
+    div = curDiv;
+  }
+
   const currentContent = div.querySelector("textarea").value;
   const currentTitle = div.querySelector("input").value;
   const currentDate = div.querySelector("h5");
@@ -88,6 +94,7 @@ function handleBlurTextarea(event) {
 
 function handleFocusDiv(event) {
   if (event.target.tagName === "BUTTON") {
+    console.log("hello");
     handleFocusQuit(event);
     return;
   }
@@ -125,6 +132,8 @@ function getMemoDivObj(memoObj) {
   content.addEventListener("focus", handleFocusTextarea);
   content.addEventListener("blur", handleBlurTextarea);
   div.addEventListener("click", handleFocusDiv);
+  div.setAttribute("draggable", "true");
+  div.setAttribute("tabindex", "0");
 
   div.appendChild(title);
   div.appendChild(updateBtn);
