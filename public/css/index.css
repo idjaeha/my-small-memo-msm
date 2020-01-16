@@ -18,7 +18,9 @@ body {
 .memoDiv,
 .loginDiv {
   display: none;
+  position : relative;
 }
+
 
 button {
   all: unset;
@@ -104,4 +106,7 @@ input:hover {
   color :#5f95ed;
   font-family: monospace;;
 }
-
+.showmemo {
+  transition: all 0.3s ease-in-out;
+  transform:scale(3);
+}

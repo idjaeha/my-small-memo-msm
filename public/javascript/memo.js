@@ -83,7 +83,7 @@ function refreshMemos() {
 
 function pushMemo(memoObj) {
   //받은 memo를 memos에 push 한다.
-  memos.push(memoObj);
+  isNew === true ? memos.push(memoObj) : memos.unshift(memoObj);
 }
 
 function focusTextAreaHandle(event) {
@@ -222,7 +222,15 @@ function addEventHandles() {
   memoSort.addEventListener("click", handleSort);
   searchInput.addEventListener("keyup", handleSearch);
   searchInput.addEventListener("blur", blurSearchInput);
-  toggleButton.addEventListener("click", togglebutton);
+  memoTable.addEventListener("click", showMemo);
+}
+
+function showMemo(event) {
+  event.preventDefault();
+  const btn = event.target;
+  const td = btn.parentNode;
+  if (event.target.nodeName != "DIV")
+    td.classList.toggle("showmemo");
 }
 
 function handleSort(event) { //isNew : 최신

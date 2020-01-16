@@ -15,6 +15,7 @@ const memoSort = document.getElementById("js-sort");
 const searchInput = document.querySelector(".js-search");
 const toggleButton = document.querySelector(".js-toggle");
 const sortMenu = document.querySelector(".js-section.collapsible");
+const memoView = document.querySelector(".over");
 
 const loginForm = document.querySelector(".js-loginForm");
 const idInput = loginForm.querySelector(".js-id");
