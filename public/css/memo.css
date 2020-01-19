@@ -109,6 +109,7 @@
 
 .zoomIn {
   transform: scale(2);
+  transition: transform 0.3s ease-in-out;
   z-index: 2;
   position: fixed;
   display: block;
