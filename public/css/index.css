@@ -1,6 +1,6 @@
 body {
   /* background-color: rgb(249, 253, 255); */
-  background-color: #262626;
+  background-color: #c4e5f6;
 }
 
 .container {
@@ -10,7 +10,7 @@ body {
   flex-direction: column;
   font-family: Verdana, Geneva, Tahoma, sans-serif;
   /* background-color: rgb(249, 253, 255); */
-  background-color: #262626;
+  background-color: #c4e5f6;
   width: 1080px;
   margin-left: auto;
   margin-right: auto;
